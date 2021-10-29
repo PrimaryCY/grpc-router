@@ -11,15 +11,20 @@ import (
 )
 
 type BaseRpcManager interface {
-	Walk(int, struct{})
-	Bound(pkg string, name string, f func())
+	addAfterRequest(func(*Request))
+	addBeforeRequest(func(*Request))
+
+	Walk(int)
+	Bound(pkg string, name string, f func(*Context))
 }
 
 
 type ManagerRpc struct {
 	proto.UnimplementedRouteServer
 	GRpcServer *grpc.Server
-	funcTable map[string]map[string]func(*Context)
+	BeforeRequest []func(*Context)
+	AfterRequest []func(*Context)
+	FuncTable map[string]map[string]func(*Context)
 }
 
 
@@ -44,7 +49,16 @@ func NewManagerRpc(option ...grpc.ServerOption) *ManagerRpc {
 	return mgr
 }
 
-func (m *ManagerRpc)Walk(port int, service interface{}) error{
+func (m *ManagerRpc)addAfterRequest(f func(*Request)) {
+	m.AfterRequest = append(m.AfterRequest, f)
+}
+
+func (m *ManagerRpc)addBeforeRequest(f func(*Request)) {
+	m.BeforeRequest = append(m.BeforeRequest, f)
+}
+
+
+func (m *ManagerRpc)Walk(port int) error{
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 
 	if err != nil {
@@ -79,16 +93,26 @@ func(m *ManagerRpc)RpcCallBU(ctx context.Context, req *proto.RpcRequest) (*proto
 
 
 func (m *ManagerRpc)execute(ctx *Context){
-	_, pkgHas := m.funcTable[ctx.Request.RawRequest.Package]
-	Func, FuncHas := m.funcTable[ctx.Request.RawRequest.Package][ctx.Request.RawRequest.FunctionName]
+	_, pkgHas := m.FuncTable[ctx.Request.RawRequest.Package]
+	Func, FuncHas := m.FuncTable[ctx.Request.RawRequest.Package][ctx.Request.RawRequest.FunctionName]
 	if pkgHas && FuncHas {
-		// todo: 缺少中间件逻辑
+		for _, f := range m.BeforeRequest{
+			f(ctx)
+		}
+		if ctx.Res.StatusCode != 0{
+			return
+		}
 		Func(ctx)
+
 	} else{
 		ctx.Res.StatusCode = RPC_404_NOT_FOUND
 		ctx.Res.Data = map[interface{}]interface{}{
 			"err": fmt.Sprintf("function or package not fount, package: %s, function: %s", ctx.Request.RawRequest.Package, ctx.Request.RawRequest.FunctionName),
 		}
+	}
+
+	for _, f := range m.AfterRequest{
+		f(ctx)
 	}
 
 }
@@ -126,5 +150,5 @@ func (m *ManagerRpc)RpcBUCall (
 }
 
 func (m *ManagerRpc) Bound(pkg string, name string, f func(*Context)) {
-	m.funcTable[pkg][name] = f
+	m.FuncTable[pkg][name] = f
 }

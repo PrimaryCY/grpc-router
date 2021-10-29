@@ -14,7 +14,7 @@ func NewContext(ctx context.Context, req *Request) *Context {
 	return &Context{
 		Context:  ctx,
 		Request:  req,
-		Res: nil,
+		Res: &Response{},
 	}
 }
 
