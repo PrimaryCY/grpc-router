@@ -14,6 +14,7 @@ type BaseRpcManager interface {
 	addAfterRequest(func(*Request))
 	addBeforeRequest(func(*Request))
 
+	RpcBUCall(buName string, buPort int, request *Request)(*Response, error)
 	Walk(int)
 	Bound(pkg string, name string, f func(*Context))
 }
@@ -49,11 +50,11 @@ func NewManagerRpc(option ...grpc.ServerOption) *ManagerRpc {
 	return mgr
 }
 
-func (m *ManagerRpc)addAfterRequest(f func(*Request)) {
+func (m *ManagerRpc)addAfterRequest(f func(*Context)) {
 	m.AfterRequest = append(m.AfterRequest, f)
 }
 
-func (m *ManagerRpc)addBeforeRequest(f func(*Request)) {
+func (m *ManagerRpc)addBeforeRequest(f func(*Context)) {
 	m.BeforeRequest = append(m.BeforeRequest, f)
 }
 

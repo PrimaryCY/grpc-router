@@ -4,11 +4,6 @@ import (
 	"grpc-route/coordinate"
 )
 
-type BaseRpcService interface {
-	register()
-	walk()
-}
-
 type Service struct {
 	coordinateManager coordinate.BaseCoordinateManager
 	rpcManager BaseRpcManager
@@ -24,9 +19,12 @@ func NewService(rpcManager BaseRpcManager, coordinateManager coordinate.BaseCoor
 }
 
 
-func (s *Service)Register(opt ...string){
-	s.coordinateManager.RegisterRpc(opt)
+func (s *Service)Register(coordinateService *coordinate.Service)(id string, err error){
+	if id, err = s.coordinateManager.RegisterRpc(coordinateService); err != nil{
+		return
+	}
 	s.ready = true
+	return
 }
 
 func (s *Service)Walk(port int) {
