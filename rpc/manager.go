@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"google.golang.org/grpc/health"
+	"google.golang.org/grpc/health/grpc_health_v1"
 	"grpc-route/rpc/proto"
 	"net"
 	"sync"
@@ -67,6 +69,8 @@ func (m *ManagerRpc)Walk(port int) error{
 	}
 
 	proto.RegisterRouteServer(m.GRpcServer, &ManagerRpc{})
+	grpc_health_v1.RegisterHealthServer(m.GRpcServer, health.NewServer())
+
 	reflection.Register(m.GRpcServer)
 
 	if err = m.GRpcServer.Serve(lis); err != nil {

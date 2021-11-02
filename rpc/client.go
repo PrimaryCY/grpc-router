@@ -2,19 +2,19 @@ package rpc
 
 import "grpc-route/coordinate"
 
-type Client struct {
+type ClientRpc struct {
 	coordinateManager coordinate.BaseCoordinateManager
 	rpcManager BaseRpcManager
 }
 
-func NewClient(rpcManager BaseRpcManager, coordinateManager coordinate.BaseCoordinateManager) *Client {
-	return &Client{
+func NewClient(rpcManager BaseRpcManager, coordinateManager coordinate.BaseCoordinateManager) *ClientRpc {
+	return &ClientRpc{
 		coordinateManager: coordinateManager,
 		rpcManager:rpcManager,
 	}
 }
 
-func (c *Client)RpcCallBu(buName string, request *Request)(*Response, error)  {
+func (c *ClientRpc)RpcCallBu(buName string, request *Request)(*Response, error)  {
 	service, err := c.coordinateManager.GetRpcService(buName)
 	if err != nil{
 		return nil, err
