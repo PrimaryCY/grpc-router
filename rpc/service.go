@@ -2,27 +2,29 @@ package rpc
 
 import (
 	"errors"
+	"fmt"
+	"google.golang.org/grpc/grpclog"
 	"grpc-route/coordinate"
 )
 
 type ServiceRpc struct {
-	coordinateManager coordinate.BaseCoordinateManager
-	rpcManager BaseRpcManager
+	CoordinateManager coordinate.BaseCoordinateManager
+	RpcManager BaseRpcManager
 	ready bool
 	serviceId string
 }
 
 func NewServiceRpc(rpcManager BaseRpcManager, coordinateManager coordinate.BaseCoordinateManager) *ServiceRpc  {
 	return &ServiceRpc{
-		coordinateManager: coordinateManager,
-		rpcManager:        rpcManager,
+		CoordinateManager: coordinateManager,
+		RpcManager:        rpcManager,
 		ready:             false,
 	}
 }
 
 
 func (s *ServiceRpc)Register(coordinateService *coordinate.Service)(id string, err error){
-	if id, err = s.coordinateManager.RegisterRpc(coordinateService); err != nil{
+	if id, err = s.CoordinateManager.RegisterRpc(coordinateService); err != nil{
 		return
 	}
 	s.ready = true
@@ -31,7 +33,7 @@ func (s *ServiceRpc)Register(coordinateService *coordinate.Service)(id string, e
 }
 
 func (s *ServiceRpc)DeRegister(id string)(err error){
-	if err = s.coordinateManager.DeregisterRpc(id); err != nil{
+	if err = s.CoordinateManager.DeregisterRpc(id); err != nil{
 		return
 	}
 	s.ready = false
@@ -43,17 +45,18 @@ func (s *ServiceRpc)Walk(port int) error {
 	if !s.ready{
 		return errors.New("rpc service not ready")
 	}
-	return s.rpcManager.Walk(port)
+	return s.RpcManager.Walk(port)
 }
 
 func (s *ServiceRpc)AfterRequest(f func(*Context)) {
-	s.rpcManager.addAfterRequest(f)
+	s.RpcManager.addAfterRequest(f)
 }
 
 func (s *ServiceRpc)BeforeRequest(f func(*Context)) {
-	s.rpcManager.addBeforeRequest(f)
+	s.RpcManager.addBeforeRequest(f)
 }
 
 func (s *ServiceRpc)AddHandler(pkg string, name string, f func(*Context)) {
-	s.rpcManager.Bound(pkg, name, f)
+	grpclog.Info(fmt.Sprintf("pkg: %s -> name: %s -> func: %s", pkg, name, f))
+	s.RpcManager.Bound(pkg, name, f)
 }

@@ -22,7 +22,7 @@ func Client() *rpc.ClientRpc {
 
 func main() {
 	client := Client()
-	for i := 0; i<10000;i++  {
+	for i := 0; i<1;i++  {
 		response, err := client.RpcCallBu("example", &rpc.Request{
 			Header: map[string]interface{}{
 				"token": "==!jxz",

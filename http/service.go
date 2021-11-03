@@ -3,20 +3,20 @@ package http
 import "grpc-route/coordinate"
 
 type ServiceHttp struct {
-	coordinateManager coordinate.BaseCoordinateManager
+	CoordinateManager coordinate.BaseCoordinateManager
 	ready bool
 	serviceId string
 }
 
 func NewServiceHttp(coordinateManager coordinate.BaseCoordinateManager) *ServiceHttp  {
 	return &ServiceHttp{
-		coordinateManager: coordinateManager,
+		CoordinateManager: coordinateManager,
 		ready:             false,
 	}
 }
 
 func (s *ServiceHttp)Register(coordinateService *coordinate.Service)(id string, err error){
-	if id, err = s.coordinateManager.RegisterHttp(coordinateService); err != nil{
+	if id, err = s.CoordinateManager.RegisterHttp(coordinateService); err != nil{
 		return
 	}
 	s.ready = true
@@ -24,7 +24,7 @@ func (s *ServiceHttp)Register(coordinateService *coordinate.Service)(id string, 
 }
 
 func (s *ServiceHttp)DeRegister(id string)(err error){
-	if err = s.coordinateManager.DeregisterRpc(id); err != nil{
+	if err = s.CoordinateManager.DeregisterRpc(id); err != nil{
 		return
 	}
 	s.ready = false

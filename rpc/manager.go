@@ -155,7 +155,7 @@ func (m *ManagerRpc)RpcBUCall (
 	return ctx.Res, nil
 }
 
-func (m *ManagerRpc) Bound(pkg string, name string, f func(*Context)) {
+func (m *ManagerRpc) Bound(pkg string, name string, f func(*Context)){
 	/*
 	{
 		pkg: {

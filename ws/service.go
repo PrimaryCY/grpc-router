@@ -3,20 +3,20 @@ package ws
 import "grpc-route/coordinate"
 
 type ServiceWs struct {
-	coordinateManager coordinate.BaseCoordinateManager
+	CoordinateManager coordinate.BaseCoordinateManager
 	ready bool
 	serviceId string
 }
 
 func NewServiceSock(coordinateManager coordinate.BaseCoordinateManager) *ServiceWs  {
 	return &ServiceWs{
-		coordinateManager: coordinateManager,
+		CoordinateManager: coordinateManager,
 		ready:             false,
 	}
 }
 
 func (s *ServiceWs)Register(coordinateService *coordinate.Service)(id string, err error){
-	if id, err = s.coordinateManager.RegisterWs(coordinateService); err != nil{
+	if id, err = s.CoordinateManager.RegisterWs(coordinateService); err != nil{
 		return
 	}
 	s.ready = true
@@ -24,7 +24,7 @@ func (s *ServiceWs)Register(coordinateService *coordinate.Service)(id string, er
 }
 
 func (s *ServiceWs)DeRegister(id string)(err error){
-	if err = s.coordinateManager.DeregisterRpc(id); err != nil{
+	if err = s.CoordinateManager.DeregisterRpc(id); err != nil{
 		return
 	}
 	s.ready = false

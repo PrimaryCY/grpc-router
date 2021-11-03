@@ -5,23 +5,23 @@ import (
 )
 
 type ClientRpc struct {
-	coordinateManager coordinate.BaseCoordinateManager
-	rpcManager BaseRpcManager
+	CoordinateManager coordinate.BaseCoordinateManager
+	RpcManager BaseRpcManager
 }
 
 func NewClient(rpcManager BaseRpcManager, coordinateManager coordinate.BaseCoordinateManager) *ClientRpc {
 	return &ClientRpc{
-		coordinateManager: coordinateManager,
-		rpcManager:rpcManager,
+		CoordinateManager: coordinateManager,
+		RpcManager:rpcManager,
 	}
 }
 
 func (c *ClientRpc)RpcCallBu(buName string, request *Request)(*Response, error)  {
-	service, err := c.coordinateManager.GetRpcService(buName)
+	service, err := c.CoordinateManager.GetRpcService(buName)
 	if err != nil{
 		return nil, err
 	}
-	return c.rpcManager.RpcBUCall(service.Ip, service.Port, request)
+	return c.RpcManager.RpcBUCall(service.Ip, service.Port, request)
 
 }
 

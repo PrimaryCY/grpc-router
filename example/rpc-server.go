@@ -34,6 +34,23 @@ func main() {
 		})
 	})
 
+	server.AddHandler("pkg", "testFuncName2", func(context *rpc.Context) {
+		fmt.Printf("receive params: %v \n", context.Request.Params)
+		fmt.Printf("receive header: %v \n", context.Request.Header)
+		fmt.Printf("receive files: %v \n", context.Request.Files)
+		context.Response(200, map[string]interface{}{}, map[string]interface{}{
+			"message": 200,
+		})
+	})
+
+	server.BeforeRequest(func(context *rpc.Context) {
+		fmt.Printf("before request! context: %v \n", context)
+	})
+
+	server.AfterRequest(func(context *rpc.Context) {
+		fmt.Printf("after request! context: %v \n", context)
+	})
+
 	_, _ = server.Register(&coordinate.Service{
 		Ip:   tools.LocalIP(),
 		Port: port,
