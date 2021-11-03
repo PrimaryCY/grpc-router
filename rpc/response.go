@@ -8,12 +8,12 @@ import (
 
 type Response struct {
 	StatusCode int
-	Header	map[interface{}]interface{}
-	Data	map[interface{}]interface{}
+	Header	map[string]interface{}
+	Data	map[string]interface{}
 }
 
 
-func NewResponse(code int, header map[interface{}]interface{}, data map[interface{}]interface{}) *Response{
+func NewResponse(code int, header map[string]interface{}, data map[string]interface{}) *Response{
 	return &Response{
 		StatusCode: code,
 		Header:     header,
@@ -22,11 +22,11 @@ func NewResponse(code int, header map[interface{}]interface{}, data map[interfac
 }
 
 func LoadProtoResponse(r *proto.RpcResponse) (*Response, error){
-	var dataUnmarshal map[interface{}]interface{}
+	var dataUnmarshal map[string]interface{}
 	if err := json.Unmarshal([]byte(r.Data), &dataUnmarshal); err != nil {
 		return nil, err
 	}
-	var headerUnmarshal map[interface{}]interface{}
+	var headerUnmarshal map[string]interface{}
 	if err := json.Unmarshal([]byte(r.Header), &headerUnmarshal); err != nil {
 		return nil, err
 	}

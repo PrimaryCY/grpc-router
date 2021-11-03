@@ -7,4 +7,5 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/consul/api v1.11.0 // indirect
 	google.golang.org/grpc v1.41.0 // indirect
+	google.golang.org/protobuf v1.25.0 // indirect
 )

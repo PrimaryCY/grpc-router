@@ -19,6 +19,6 @@ func NewContext(ctx context.Context, req *Request) *Context {
 }
 
 
-func (m *Context)Response(code int, header map[interface{}]interface{}, data map[interface{}]interface{}){
+func (m *Context)Response(code int, header map[string]interface{}, data map[string]interface{}){
 	m.Res = NewResponse(code, header, data)
 }

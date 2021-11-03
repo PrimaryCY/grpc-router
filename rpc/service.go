@@ -1,6 +1,7 @@
 package rpc
 
 import (
+	"errors"
 	"grpc-route/coordinate"
 )
 
@@ -38,18 +39,18 @@ func (s *ServiceRpc)DeRegister(id string)(err error){
 	return
 }
 
-func (s *ServiceRpc)Walk(port int) {
+func (s *ServiceRpc)Walk(port int) error {
 	if !s.ready{
-		return
+		return errors.New("rpc service not ready")
 	}
-	s.rpcManager.Walk(port)
+	return s.rpcManager.Walk(port)
 }
 
-func (s *ServiceRpc)AfterRequest(f func(*Request)) {
+func (s *ServiceRpc)AfterRequest(f func(*Context)) {
 	s.rpcManager.addAfterRequest(f)
 }
 
-func (s *ServiceRpc)BeforeRequest(f func(*Request)) {
+func (s *ServiceRpc)BeforeRequest(f func(*Context)) {
 	s.rpcManager.addBeforeRequest(f)
 }
 

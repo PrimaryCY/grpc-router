@@ -13,11 +13,11 @@ import (
 )
 
 type BaseRpcManager interface {
-	addAfterRequest(func(*Request))
-	addBeforeRequest(func(*Request))
+	addAfterRequest(func(*Context))
+	addBeforeRequest(func(*Context))
 
 	RpcBUCall(buName string, buPort int, request *Request)(*Response, error)
-	Walk(int)
+	Walk(int) error
 	Bound(pkg string, name string, f func(*Context))
 }
 
@@ -46,6 +46,7 @@ func NewManagerRpc(option ...grpc.ServerOption) *ManagerRpc {
 
 		mgr = &ManagerRpc{
 			GRpcServer: grpc.NewServer(opts...),
+			FuncTable: map[string]map[string]func(*Context){},
 		}
 	}
 
@@ -68,7 +69,7 @@ func (m *ManagerRpc)Walk(port int) error{
 		return err
 	}
 
-	proto.RegisterRouteServer(m.GRpcServer, &ManagerRpc{})
+	proto.RegisterRouteServer(m.GRpcServer, m)
 	grpc_health_v1.RegisterHealthServer(m.GRpcServer, health.NewServer())
 
 	reflection.Register(m.GRpcServer)
@@ -111,7 +112,7 @@ func (m *ManagerRpc)execute(ctx *Context){
 
 	} else{
 		ctx.Res.StatusCode = RPC_404_NOT_FOUND
-		ctx.Res.Data = map[interface{}]interface{}{
+		ctx.Res.Data = map[string]interface{}{
 			"err": fmt.Sprintf("function or package not fount, package: %s, function: %s", ctx.Request.RawRequest.Package, ctx.Request.RawRequest.FunctionName),
 		}
 	}
@@ -155,5 +156,8 @@ func (m *ManagerRpc)RpcBUCall (
 }
 
 func (m *ManagerRpc) Bound(pkg string, name string, f func(*Context)) {
+	if _, ok := m.FuncTable[pkg]; !ok{
+		m.FuncTable[pkg] = map[string]func(*Context){}
+	}
 	m.FuncTable[pkg][name] = f
 }

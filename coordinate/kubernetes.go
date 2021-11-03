@@ -49,8 +49,6 @@ func (c *KubernetesCoordinateManager) GetHttpService(name string) (*Service, err
 		Ip:    strings.ToLower(name),
 		Port:  0,
 		Name:  name,
-		Meta:  nil,
-		Extra: nil,
 		Raw:   nil,
 	},nil
 }
@@ -61,8 +59,6 @@ func (c *KubernetesCoordinateManager) GetWsService(name string) (*Service, error
 		Ip:    strings.ToLower(name),
 		Port:  0,
 		Name:  name,
-		Meta:  nil,
-		Extra: nil,
 		Raw:   nil,
 	},nil
 }
@@ -73,8 +69,6 @@ func (c *KubernetesCoordinateManager) GetRpcService(name string) (*Service, erro
 		Ip:    strings.ToLower(name),
 		Port:  c.RpcPort,
 		Name:  name,
-		Meta:  nil,
-		Extra: nil,
 		Raw:   nil,
 	},nil
 }

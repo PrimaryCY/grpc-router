@@ -8,8 +8,8 @@ import (
 
 type Request struct {
 	RawRequest 	 *proto.RpcRequest
-	Header       map[interface{}]interface{}
-	Params       map[interface{}]interface{}
+	Header       map[string]interface{}
+	Params       map[string]interface{}
 	Files		 []byte
 	FuncName	string
 	Package 	string
@@ -18,8 +18,8 @@ type Request struct {
 func NewRequest(funcName string,
 	pkg string,
 	files []byte,
-	params map[interface{}]interface{},
-	header map[interface{}]interface{},
+	params map[string]interface{},
+	header map[string]interface{},
 	req *proto.RpcRequest) *Request {
 	return &Request{
 		RawRequest: req,
@@ -32,12 +32,12 @@ func NewRequest(funcName string,
 }
 
 func LoadProtoRequest(req *proto.RpcRequest) (*Request, error) {
-	var header map[interface{}]interface{}
+	var header map[string]interface{}
 	if err := json.Unmarshal([]byte(req.Header), &header); err != nil {
 		return nil, err
 	}
 
-	var params map[interface{}]interface{}
+	var params map[string]interface{}
 	if err := json.Unmarshal([]byte(req.Params), &params); err != nil {
 		return nil, err
 	}
@@ -55,10 +55,10 @@ func LoadProtoRequest(req *proto.RpcRequest) (*Request, error) {
 func (r *Request)DumpProtoRequest() (*proto.RpcRequest, error){
 
 	if r.Params == nil{
-		r.Params = map[interface{}]interface{}{}
+		r.Params = map[string]interface{}{}
 	}
 	if r.Header == nil{
-		r.Header = map[interface{}]interface{}{}
+		r.Header = map[string]interface{}{}
 	}
 	headerMarshalByte, err := json.Marshal(r.Header)
 	if err != nil{
