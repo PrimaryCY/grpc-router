@@ -22,22 +22,23 @@ func Client() *rpc.ClientRpc {
 
 func main() {
 	client := Client()
-	response, err := client.RpcCallBu("example", &rpc.Request{
-		Header: map[string]interface{}{
-			"token": "==!jxz",
-		},
-		Params: map[string]interface{}{
-			"data": map[string]string{
-				"name": "pony",
+	for i := 0; i<10000;i++  {
+		response, err := client.RpcCallBu("example", &rpc.Request{
+			Header: map[string]interface{}{
+				"token": "==!jxz",
 			},
-		},
-		Files:    []byte{1, 2},
-		FuncName: "testFuncName",
-		Package:  "pkg",
-	})
-	if err != nil{
-		panic(err)
+			Params: map[string]interface{}{
+				"data": map[string]int{
+					"num": i,
+				},
+			},
+			Files:    []byte{1, 2},
+			FuncName: "testFuncName",
+			Package:  "pkg",
+		})
+		if err != nil{
+			fmt.Println(err)
+		}
+		fmt.Printf("response: %#v", response)
 	}
-	fmt.Printf("response: %#v", response)
-	
 }

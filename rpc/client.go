@@ -1,6 +1,8 @@
 package rpc
 
-import "grpc-route/coordinate"
+import (
+	"grpc-route/coordinate"
+)
 
 type ClientRpc struct {
 	coordinateManager coordinate.BaseCoordinateManager

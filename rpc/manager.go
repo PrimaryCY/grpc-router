@@ -27,7 +27,7 @@ type ManagerRpc struct {
 	GRpcServer *grpc.Server
 	BeforeRequest []func(*Context)
 	AfterRequest []func(*Context)
-	FuncTable map[string]map[string]func(*Context)
+	FuncTable *sync.Map
 }
 
 
@@ -46,7 +46,6 @@ func NewManagerRpc(option ...grpc.ServerOption) *ManagerRpc {
 
 		mgr = &ManagerRpc{
 			GRpcServer: grpc.NewServer(opts...),
-			FuncTable: map[string]map[string]func(*Context){},
 		}
 	}
 
@@ -99,8 +98,9 @@ func(m *ManagerRpc)RpcCallBU(ctx context.Context, req *proto.RpcRequest) (*proto
 
 
 func (m *ManagerRpc)execute(ctx *Context){
-	_, pkgHas := m.FuncTable[ctx.Request.RawRequest.Package]
-	Func, FuncHas := m.FuncTable[ctx.Request.RawRequest.Package][ctx.Request.RawRequest.FunctionName]
+	pkgMapI, pkgHas := m.FuncTable.Load(ctx.Request.RawRequest.Package)
+	pkgMap := pkgMapI.(*sync.Map)
+	Func, FuncHas := pkgMap.Load(ctx.Request.RawRequest.FunctionName)
 	if pkgHas && FuncHas {
 		for _, f := range m.BeforeRequest{
 			f(ctx)
@@ -108,7 +108,7 @@ func (m *ManagerRpc)execute(ctx *Context){
 		if ctx.Res.StatusCode != 0{
 			return
 		}
-		Func(ctx)
+		Func.(func(*Context))(ctx)
 
 	} else{
 		ctx.Res.StatusCode = RPC_404_NOT_FOUND
@@ -156,8 +156,23 @@ func (m *ManagerRpc)RpcBUCall (
 }
 
 func (m *ManagerRpc) Bound(pkg string, name string, f func(*Context)) {
-	if _, ok := m.FuncTable[pkg]; !ok{
-		m.FuncTable[pkg] = map[string]func(*Context){}
+	/*
+	{
+		pkg: {
+			"name": func(){}
+			}
 	}
-	m.FuncTable[pkg][name] = f
+	 */
+	pkgMap := &sync.Map{}
+	if m.FuncTable == nil{
+		m.FuncTable = pkgMap
+	}
+
+	funcMap := &sync.Map{}
+	_, ok := pkgMap.Load(pkg)
+	if !ok{
+		pkgMap.Store(pkg, funcMap)
+	}
+
+	funcMap.Store(name, f)
 }

@@ -60,10 +60,11 @@ func (c *ConsulCoordinateManager)RegisterRpc(service *Service)(id string, err er
 	registration.Address = service.Ip
 
 	registration.Check = &api.AgentServiceCheck{
-		HTTP:                           fmt.Sprintf("http://%s:%d%s", registration.Address, registration.Port, "/check"),
 		Timeout:                        "5s",
 		Interval:                       "10s",
 		DeregisterCriticalServiceAfter: "30s",
+		// GRpc 支持，执行健康检查的地址，service 会传到 Health.Check 函数中
+		GRPC:     fmt.Sprintf("%v:%v", service.Ip, service.Port),
 	}
 
 	return c.registerService(registration)
