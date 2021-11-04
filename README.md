@@ -3,7 +3,7 @@
 grpc-router基于google开发的grpc开发的一个grpc路由工具,目前还有python版本的grpc-router版本，但是尚未发布
 
 ###### Install
-`go get github.com/google/uuid`
+`go get github.com/PrimaryCY/grpc-router`
 
 ## Quick Start
 
