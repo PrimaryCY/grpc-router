@@ -1,6 +1,9 @@
 # grpc-router
-让程序内部像使用http的方式一样使用grpc
+让程序内部像使用http的方式一样使用grpc,
+grpc-router基于google开发的grpc开发的一个grpc路由工具,目前还有python版本的grpc-router版本，但是尚未发布
 
+###### Install
+`go get github.com/google/uuid`
 
 ## Quick Start
 
@@ -14,9 +17,9 @@ package main
 import (
 	"fmt"
 	"github.com/hashicorp/consul/api"
-	"grpc-route/coordinate"
-	"grpc-route/rpc"
-	"grpc-route/tools"
+	"github.com/PrimaryCY/grpc-router/coordinate"
+	"github.com/PrimaryCY/grpc-router/rpc"
+	"github.com/PrimaryCY/grpc-router/tools"
 )
 
 func main() {
@@ -63,8 +66,8 @@ package main
 import (
 	"fmt"
 	"github.com/hashicorp/consul/api"
-	"grpc-route/coordinate"
-	"grpc-route/rpc"
+	"github.com/PrimaryCY/grpc-router/coordinate"
+	"github.com/PrimaryCY/grpc-router/rpc"
 )
 
 func main() {
