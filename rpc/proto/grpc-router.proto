@@ -1,13 +1,13 @@
 syntax = "proto3";
 
-package Route;
+package Router;
 
-option objc_class_prefix = "Route";
+option objc_class_prefix = "Router";
 option go_package ="../proto";
 
 
 // The Route service
-service Route {
+service Router {
   // Sends a greeting
   rpc rpcCallBU (RpcRequest) returns (RpcResponse) {}
 

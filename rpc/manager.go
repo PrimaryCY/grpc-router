@@ -23,7 +23,7 @@ type BaseRpcManager interface {
 
 
 type ManagerRpc struct {
-	proto.UnimplementedRouteServer
+	proto.UnimplementedRouterServer
 	GRpcServer *grpc.Server
 	BeforeRequest []func(*Context)
 	AfterRequest []func(*Context)
@@ -68,7 +68,7 @@ func (m *ManagerRpc)Walk(port int) error{
 		return err
 	}
 
-	proto.RegisterRouteServer(m.GRpcServer, m)
+	proto.RegisterRouterServer(m.GRpcServer, m)
 	grpc_health_v1.RegisterHealthServer(m.GRpcServer, health.NewServer())
 
 	reflection.Register(m.GRpcServer)
@@ -141,7 +141,7 @@ func (m *ManagerRpc)RpcBUCall (
 	}
 	defer conn.Close()
 
-	c := proto.NewRouteClient(conn)
+	c := proto.NewRouterClient(conn)
 	protoResponse, err := c.RpcCallBU(ctx.Context, protoReq)
 	if err != nil{
 		return nil, err
