@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"google.golang.org/grpc/grpclog"
-	"grpc-route/coordinate"
+	"github.com/PrimaryCY/grpc-router/coordinate"
 )
 
 type ServiceRpc struct {

@@ -1,6 +1,6 @@
 package ws
 
-import "grpc-route/coordinate"
+import "github.com/PrimaryCY/grpc-router/coordinate"
 
 type ServiceWs struct {
 	CoordinateManager coordinate.BaseCoordinateManager

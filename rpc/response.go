@@ -2,7 +2,7 @@ package rpc
 
 import (
 	"encoding/json"
-	"grpc-route/rpc/proto"
+	"github.com/PrimaryCY/grpc-router/rpc/proto"
 	"unsafe"
 )
 

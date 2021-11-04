@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/hashicorp/consul/api"
-	"grpc-route/coordinate"
-	"grpc-route/rpc"
-	"grpc-route/tools"
+	"github.com/PrimaryCY/grpc-router/coordinate"
+	"github.com/PrimaryCY/grpc-router/rpc"
+	"github.com/PrimaryCY/grpc-router/tools"
 )
 
 func Server() *rpc.ServiceRpc {

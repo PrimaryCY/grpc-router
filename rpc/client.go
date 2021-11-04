@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	"grpc-route/coordinate"
+	"github.com/PrimaryCY/grpc-router/coordinate"
 )
 
 type ClientRpc struct {

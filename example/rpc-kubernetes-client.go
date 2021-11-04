@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"grpc-route/coordinate"
-	"grpc-route/rpc"
+	"github.com/PrimaryCY/grpc-router/coordinate"
+	"github.com/PrimaryCY/grpc-router/rpc"
 )
 
 func KubernetesClient() *rpc.ClientRpc {

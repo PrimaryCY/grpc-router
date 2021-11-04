@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
-	"grpc-route/rpc/proto"
+	"github.com/PrimaryCY/grpc-router/rpc/proto"
 	"net"
 	"sync"
 )

@@ -1,6 +1,6 @@
 package http
 
-import "grpc-route/coordinate"
+import "github.com/PrimaryCY/grpc-router/coordinate"
 
 type ServiceHttp struct {
 	CoordinateManager coordinate.BaseCoordinateManager

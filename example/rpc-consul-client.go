@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/hashicorp/consul/api"
-	"grpc-route/coordinate"
-	"grpc-route/rpc"
+	"github.com/PrimaryCY/grpc-router/coordinate"
+	"github.com/PrimaryCY/grpc-router/rpc"
 )
 
 func Client() *rpc.ClientRpc {

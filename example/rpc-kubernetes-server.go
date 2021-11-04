@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"grpc-route/coordinate"
-	"grpc-route/rpc"
-	"grpc-route/tools"
+	"github.com/PrimaryCY/grpc-router/coordinate"
+	"github.com/PrimaryCY/grpc-router/rpc"
+	"github.com/PrimaryCY/grpc-router/tools"
 )
 
 func KubernetesServer(port int) *rpc.ServiceRpc {
