@@ -1,4 +1,4 @@
-module grpc-route
+module github.com/PrimaryCY/grpc-router
 
 go 1.16
 

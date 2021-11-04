@@ -57,7 +57,7 @@ func main() {
 		Name: "example",
 	})
 
-	fmt.Printf("start server, ip: %s port: %d \n", tools.LocalIP(), port)
+	fmt.Printf("start consul server, ip: %s port: %d \n", tools.LocalIP(), port)
 	if err := server.Walk(port); err!=nil{
 		panic(err)
 	}

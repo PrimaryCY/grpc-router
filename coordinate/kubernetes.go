@@ -44,29 +44,17 @@ func (c *KubernetesCoordinateManager) GetServices() ([]*Service, error) {
 }
 
 func (c *KubernetesCoordinateManager) GetHttpService(name string) (*Service, error) {
-	return &Service{
-		Id:    "",
-		Ip:    strings.ToLower(name),
-		Port:  0,
-		Name:  name,
-		Raw:   nil,
-	},nil
+	return nil,nil
 }
 
 func (c *KubernetesCoordinateManager) GetWsService(name string) (*Service, error) {
-	return &Service{
-		Id:    "",
-		Ip:    strings.ToLower(name),
-		Port:  0,
-		Name:  name,
-		Raw:   nil,
-	},nil
+	return nil,nil
 }
 
 func (c *KubernetesCoordinateManager) GetRpcService(name string) (*Service, error) {
 	return &Service{
 		Id:    "",
-		Ip:    strings.ToLower(name),
+		Ip:    strings.Replace(strings.ToLower(name), "-", "_", -1),
 		Port:  c.RpcPort,
 		Name:  name,
 		Raw:   nil,
