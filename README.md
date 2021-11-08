@@ -9,7 +9,7 @@ grpc-router基于google开发的grpc开发的一个grpc路由工具,目前还有
 
 **代码示例:**
 
-### grpc-route-server:
+### grpc-router-server:
 
 ```go
 package main
@@ -58,7 +58,7 @@ func main() {
 
 ```
 
-### grpc-route-client:
+### grpc-router-client:
 
 ```go
 package main
